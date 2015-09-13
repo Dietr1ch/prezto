@@ -5,46 +5,36 @@ Prezto is the configuration framework for [Zsh][1]; it enriches the command line
 interface environment with sane defaults, aliases, functions, auto completion,
 and prompt themes.
 
-Installation
-------------
 
-Prezto will work with any recent release of Zsh, but the minimum required
-version is 4.3.17.
+Requirements
+------------------
+  * git
+  * zsh >= 4.3.17
+  * curl _(for the oneline install)_
+  * A powerline-patched font _(To see most of the cool symbols)_
 
-  1. Launch Zsh:
 
-        zsh
+Quick Installation
+------------------
+(triple click selects the line)
+```zsh
+curl -L https://raw.githubusercontent.com/Dietr1ch/prezto/master/install.zsh | zsh
+```
 
-  2. Clone the repository:
-
-        git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-
-  3. Create a new Zsh configuration by copying the Zsh configuration files
-     provided:
-
-        setopt EXTENDED_GLOB
-        for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-          ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-        done
-
-  4. Set Zsh as your default shell:
-
-        chsh -s /bin/zsh
-
-  5. Open a new Zsh terminal window or tab.
-
-### Troubleshooting
-
-If you are not able to find certain commands after switching to *Prezto*,
-modify the `PATH` variable in *~/.zprofile* then open a new Zsh terminal
-window or tab.
+### What happens
+The following should happen:
+  * `zsh` runs the recently downloaded run script.
+  * The project and all the submodules are cloned into your home.
+  * Your current path will be written into the new *~/.zshrc*.
 
 Updating
 --------
 
 Pull the latest changes and update submodules.
+```zsh
+$HOME/.zprezto/update.zsh
+```
 
-    git pull && git submodule update --init --recursive
 
 Usage
 -----
