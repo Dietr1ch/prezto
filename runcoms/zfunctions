@@ -1,0 +1,130 @@
+#!/bin/zsh
+
+# Fortune cookies
+# ===============
+function cookie {
+  if [[ -t 0 || -t 1 ]]; then
+    if (( $+commands[fortune] )); then
+      if (( $+commands[lolcat] )); then
+        if (( $+commands[unisay] )); then
+          fortune -s | unisay -C | lolcat
+        else
+          fortune -s | lolcat
+        fi
+      else
+        fortune -s
+      fi
+    else
+      echo "Well, no cookies for you.. :c"
+    fi
+    print
+  fi
+}
+
+
+# Moving around
+# =============
+function ccd() {
+  mkdir -p $1; cd $1
+}
+function c(){
+  builtin cd $1
+  while (( $(\ls -AU1 | head -n2 | wc -l) == 1)); do
+    if [[ -d $(\ls -AU) ]]; then
+      echo "Entering $(\ls -AU)"
+      cd $(\ls -AU)
+    else
+      break
+    fi
+  done
+}
+function b(){
+  builtin cd ..
+  while (( $(\ls -AU1 | head -n2 | wc -l) == 1)); do
+    echo "Leaving $(pwd)"
+    cd ..
+  done
+}
+compdef _dirs c
+
+
+function open {
+  if [ -z "$1" ]; then
+    xdg-open . &> /dev/null
+  else
+    for f in "$@"; do
+      xdg-open "$f" &> /dev/null
+    done
+  fi
+}
+
+
+# Modifying files
+# ===============
+function xmlPrettify() {
+  xmllint --format $1 --output $2
+}
+
+function splitFlacAuto(){
+  shntool split -f $1.cue -o flac $1.flac;
+  cuetag.sh $1.cue split-track*.flac;
+}
+function splitFlac(){
+  shntool split -f $1 -o flac $2;
+  cuetag.sh $1 split-track*.flac;
+}
+function extract() {
+    unset REMOVE_ARCHIVE
+
+    if test "$1" = "-r"; then
+        REMOVE=1
+        shift
+    fi
+  if [[ -f $1 ]]; then
+    case $1 in
+      *.tar.bz2) tar xvjf $1;;
+      *.tar.gz) tar xvzf $1;;
+      *.tar.xz) tar xvJf $1;;
+      *.tar.lzma) tar --lzma -xvf $1;;
+      *.bz2) bunzip $1;;
+      *.rar) unrar x $1;;
+      *.gz) gunzip $1;;
+      *.tar) tar xvf $1;;
+      *.tbz2) tar xvjf $1;;
+      *.tgz) tar xvzf $1;;
+      *.zip) unzip $1;;
+      *.Z) uncompress $1;;
+      *.7z) 7z x $1;;
+      *) echo "'$1' cannot be extracted via >extract<";;
+    esac
+
+    if [[ $REMOVE_ARCHIVE -eq 1 ]]; then
+        echo removing "$1";
+        /bin/rm "$1";
+    fi
+
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+
+# System
+# ======
+function pm () {
+  if [[ -s "/bin/etckeeper" ]]; then
+    sudo etckeeper pre-install  &&  sudo pacman "$@"  &&  sudo etckeeper post-install;
+  else
+    echo "you should install etckeeper (AUR)"
+    sudo pacman "$@"
+  fi
+}
+function yu () {
+  if [[ -s "/bin/etckeeper" ]]; then
+    sudo etckeeper pre-install  &&  yaourt "$@"  &&  sudo etckeeper post-install;
+  else
+    echo "you should install etckeeper (AUR)"
+    yaourt "$@"
+  fi
+}
+

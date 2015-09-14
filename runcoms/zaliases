@@ -1,0 +1,92 @@
+#!/bin/zsh
+
+# System
+# ======
+alias _='sudo'
+# top
+alias h='htop -u $USER'
+alias hh='htop'
+# Systemd
+alias s='systemctl'
+# Performance
+alias _link='sudo prelink -aqR'
+# SSD Care
+alias _trim='fstrim -v /'
+alias tlt='_trim;_link;_trim'
+alias _tlt='_trim;_link;_trim'
+# History
+alias history='fc -l 1'
+# Finding
+alias afind='ack -il'
+alias ackp='ack "$(clipPaste)"'
+# Clipboard
+alias clipCopy='xclip -sel clip'
+alias clipPaste='xclip -o'
+alias clipLength='clipPaste | wc'
+
+
+# Moving arround
+# ==============
+# ls
+alias l="ls -pvC --group-directories-first -L 2> /dev/null"
+alias ll="l -lsh"
+alias la="l -A"
+alias lla="la -lsh"
+alias lsa="la -lsh"
+alias sl="ls"
+compdef _dirs l
+compdef _dirs ls
+# Dir stack
+alias pu='pushd'
+alias po='popd'
+# More stuff
+alias count='wc -l'
+# tmp
+alias tmp='cd /tmp'
+alias t='cd /tmp'
+alias ...='cd ../..'
+# Clearing
+alias cl="clear"
+alias cll="clear; l"
+alias CL="clear; l"
+# Exit
+alias x="exit"
+alias :q="exit"
+
+
+# Programs
+# ========
+# Editors
+alias v="vim"
+alias vi="vim"
+# NCMPCPP
+alias m='ncmpcpp'
+# Make
+alias rmk='make clean && make'
+# Ruby
+alias rb='irb'
+# Prolog
+alias prolog='swipl'
+alias pl='prolog'
+# Python
+alias py='python'
+alias py2='python2'
+alias pdb='python -m pdb'
+alias pdb2='python2 -m pdb'
+
+
+# VCS
+# ===
+# Git
+if [[ -s "${ZDOTDIR:-$HOME}/.zaliases-git.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zaliases-git.zsh"
+fi
+alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+# Mercurial
+alias hst="hg status"
+
+
+# Network
+alias down='aria2c'
+alias dw='down'
+

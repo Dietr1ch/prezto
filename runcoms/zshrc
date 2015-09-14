@@ -1,13 +1,46 @@
-#
+#!/bin/zsh
+
+# Interactive Session init
+# ========================
 # Executes commands at the start of an interactive session.
-#
+
+
 # Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
+# =======
+#   * Sorin Ionescu <sorin.ionescu@gmail.com>
 
-# Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
 
+
+# Open a fortune cookie (most important part)
+# =====================
+cookie
+
+
+
+# Load the awesomeness
+# ====================
+function safe_source {
+  if [[ -s $1 ]]; then
+    source $1
+  fi
+}
+
+# Source prezto
+# -------------
+safe_source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# Source more stuff
+# -----------------
+# Prefeer these files for aliases, functions, other interactive session customization.
+# Path is loaded the same way, but from '.zprofile'
+safe_source "${ZDOTDIR:-$HOME}/.zaliases"
+safe_source "${ZDOTDIR:-$HOME}/.zfunctions"
+
+unset -f safe_source
+
+
+
+# Customizations
+# ==============
 # Customize to your needs...
+

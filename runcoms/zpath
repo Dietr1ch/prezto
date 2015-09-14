@@ -1,0 +1,53 @@
+#!/bin/zsh
+
+# Old $PATH
+# =========
+# This is the path you had when you installed prezto, check if anything is missing.
+#EXPORT_OLD_PATH
+
+
+# Default Prezto Path Settings
+# ============================
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+# Set the list of directories that Zsh searches for programs.
+path=(
+  /{bin,sbin}
+  /usr/{bin,sbin}
+  /usr/local/{bin,sbin}
+  $path
+)
+
+
+# Local (user) binaries
+# =====================
+export PATH="$PATH:$HOME/.bin"
+
+
+# Perl scripts
+# ============
+# export PATH="$PATH:/usr/bin/core_perl"
+
+
+# Java
+# ====
+# export JAVA_HOME="$HOME/.java"
+
+
+
+# Ruby
+# ====
+unset GEM_HOME
+if [[ -d "$HOME/.rvm" ]]; then
+  # RVM
+  [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+else
+  # No-RVM
+  # export GEM_HOME="$HOME/.gem"
+fi
+
+
+# Python
+# ======
+# export PYTHONPATH="$HOME/.bin/python"
+

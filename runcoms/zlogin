@@ -15,9 +15,22 @@
 } &!
 
 # Print a random, hopefully interesting, adage.
-if (( $+commands[fortune] )); then
-  if [[ -t 0 || -t 1 ]]; then
-    fortune -s
-    print
+# This is the cookie function later..
+if [[ -t 0 || -t 1 ]]; then
+  if (( $+commands[fortune] )); then
+    if (( $+commands[lolcat] )); then
+      if (( $+commands[unisay] )); then
+        fortune -s | unisay -C | lolcat
+      else
+        fortune -s | lolcat
+      fi
+    else
+      fortune -s
+    fi
+  else
+    echo "Well, no cookies for you.. :c"
   fi
+  print
 fi
+
+

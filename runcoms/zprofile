@@ -1,55 +1,64 @@
-#
 # Executes commands at login pre-zshrc.
-#
+
 # Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
+# =======
+#   * Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
-#
+
 # Browser
-#
+# =======
 
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
 fi
 
-#
+
 # Editors
-#
+# =======
 
 export EDITOR='nano'
 export VISUAL='nano'
 export PAGER='less'
 
-#
+# History settings
+# ================
+export HIST_IGNORE_SPACE=":P"
+export HISTIGNORE=c:b:cd:x:exit:history:fc
+export HISTIGNORE=$HISTIGNORE:fortune:lolcat
+
 # Language
-#
+# ========
 
 if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
+if [[ -z "$LC_CTYPE" ]]; then
+  export LC_CTYPE="utf-8"
+fi
+if [[ -z "$LC_ALL" ]]; then
+  export LC_ALL="en_US.utf8"
+fi
 
-#
+
+
 # Paths
-#
+# =====
 
-# Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath mailpath path
+function safe_source {
+  if [[ -s $1 ]]; then
+    source $1
+  fi
+}
+# Prefeer '.zpath' file for path setup.
+safe_source "${ZDOTDIR:-$HOME}/.zpath"
 
-# Set the the list of directories that cd searches.
-# cdpath=(
-#   $cdpath
-# )
+unset -f safe_source
 
-# Set the list of directories that Zsh searches for programs.
-path=(
-  /usr/local/{bin,sbin}
-  $path
-)
 
-#
+
 # Less
-#
+# ====
 
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
@@ -62,9 +71,9 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-#
+
 # Temporary Files
-#
+# ===============
 
 if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="/tmp/$LOGNAME"
